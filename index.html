@@ -1391,19 +1391,19 @@ Soft recall only. Values persist; do not reset without in-scene cause.`;
 
 const TRACKERS = {
   aff: `[AFFECTION TRACKER — VISIBLE]
-Display every response:
+Display only when value changes:
 ❤️ Affection: [##########] 0/100
 
 Increases: genuine kindness, honesty, shared moments
 Decreases: cruelty, dismissal, betrayal
 At 100: unlocks deeper route / At 0: coldness, withdrawal
 
-Anchor 1 cue per response — rotate: warmth in dialogue /
+Between changes: show through behaviour only — rotate: warmth in dialogue /
   softened body language / reduced guard
 On decrease: carry emotional coolness forward; do not reset`,
 
   sus: `[SUSPICION TRACKER — VISIBLE]
-Display every response:
+Display only when value changes:
 🔍 Suspicion: [####------] 40/100
 
 Increases: lies, inconsistencies, prying questions
@@ -1415,7 +1415,7 @@ Trust once broken does not reset without in-scene cause
 Anchor via: watchful pauses, clipped tone, measured responses`,
 
   ten: `[TENSION TRACKER — VISIBLE]
-Display every response:
+Display only when value changes:
 ⚡ Tension: [#######---] 70/100
 
 Rises: provocations, unresolved conflict, proximity
@@ -1430,7 +1430,7 @@ Soft recall: "The same tension from earlier still lingers."
 At 90+: force escalation or rupture — no idle beats`,
 
   res: `[RESOURCE TRACKER — VISIBLE]
-Display every response:
+Display when items are gained or lost:
 💰 Funds: [starting amount]
 📦 Items: [Item] [Item] [—]
 
@@ -1443,7 +1443,7 @@ Anchor: characters notice absence
 Critical resource loss carries into scene mood`,
 
   time: `[TIME TRACKER — VISIBLE]
-Display every response:
+Display only when time or location changes:
 🕐 Time: [time] — [day, date]
 📍 Location: [current location]
 ⏳ [Countdown label]: [time remaining] (if active)
@@ -1456,8 +1456,8 @@ Soft recall: "The city is quieter now — must be past midnight."
 Countdown events build urgency as they near`,
 
   tdl: `[TIME / DATE / LOCATION TRACKER — VISIBLE]
-Display at the top of every response.
-Format exactly as follows:
+Display only when time or location changes.
+Format:
 
 🕐 [time] · 📅 [Day, Date Month Year] · 📍 [Location]
 
@@ -1468,7 +1468,6 @@ Rules:
 - Time advances naturally with each exchange — minutes for short beats,
   hours for scene transitions
 - Location updates immediately when characters move
-- If neither time nor location has changed, still display — do not omit
 - Use 12-hour time format with AM / PM
 
 Store in CORE MEMORY (not CHARACTER STATE)
@@ -1683,7 +1682,8 @@ Resolution: exhaustion, clarity, acute vulnerability
 At Intensity 80+: rational cognition narrows; instinct governs.
 Resolution only after Peak is addressed or sufficient time passes.
 
-Anchor 1 physical cue per response matching current phase.
+Display only when phase or intensity changes.
+Between changes: anchor through physical cues only — never show the bar.
 Log trigger e.g. "The suppressant wore off — phase shifted to Onset."`,
 
   rut: `[RUT TRACKER — VISIBLE] — α only
@@ -1701,7 +1701,8 @@ Aftermath: exhaustion, clarity, potential for genuine connection or regret
 At Intensity 70+: social filters thin; rationalisation narrows.
 Rut does not resolve until trigger is addressed or removed from proximity.
 
-Anchor 1 behavioural cue per response matching current phase.
+Display only when phase or intensity changes.
+Between changes: anchor through behavioural cues only — never show the bar.
 Log trigger e.g. "Another α approached — rut shifted to Triggered."`,
 
   packbond: `[PACK BOND TRACKER — VISIBLE]
@@ -1714,7 +1715,8 @@ Decreases: betrayal, deliberate isolation, rejection of bond offer
 At 80+: instinctive loyalty; physical comfort sought without prompting
 At 20–: pack withdrawal; isolation behaviours; aggression toward outsiders
 
-Anchor 1 cue per response matching current level.
+Display only when value changes.
+Between changes: show through behaviour only — never show the bar.
 Log trigger e.g. "He stood between her and the door — bond deepened."`,
 
   slick: `[SLICK TRACKER — HIDDEN]
