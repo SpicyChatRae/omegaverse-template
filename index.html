@@ -543,8 +543,8 @@ textarea { min-height: 80px; }
         <span class="badge hyb">hybrid</span>
       </button>
       <button class="nav-item" onclick="showPanel('trackers-abo', this)">
-        <div class="nav-dot"></div> α/β/ω trackers
-        <span class="badge abo-badge">α/β/ω</span>
+        <div class="nav-dot"></div> Α/β/Ω trackers
+        <span class="badge abo-badge">Α/β/Ω</span>
       </button>
     </div>
 
@@ -728,9 +728,9 @@ textarea { min-height: 80px; }
           <input type="text" id="set-tone" placeholder="Slow burn. Institutional tension. Scent as subtext. Instinct vs. choice." oninput="updatePreview()">
         </div>
 
-        <div class="section-divider abo-div">α/β/ω WORLD RULES</div>
+        <div class="section-divider abo-div">Α/β/Ω WORLD RULES</div>
         <div class="input-group">
-          <label class="input-label">α/β/ω dynamics</label>
+          <label class="input-label">Α/β/Ω dynamics</label>
           <span class="input-hint">How secondary gender biology works in this world — specifics the model needs to write it correctly.</span>
           <textarea id="abo-dynamics" rows="3" placeholder="Heats occur every 3–4 months without suppressants. Ruts are triggered, not cyclic. Bonding requires mutual consent and bite at peak. Suppressants are pharmaceutical — effective but imperfect under emotional or physical stress." oninput="updatePreview()"></textarea>
         </div>
@@ -743,6 +743,34 @@ textarea { min-height: 80px; }
           <label class="input-label">Social and legal structure</label>
           <span class="input-hint">What secondary gender means in this world's institutions, workplaces, relationships.</span>
           <input type="text" id="abo-social" placeholder="Status disclosed on government ID. Workplace discrimination is illegal. Social discrimination is common and largely unchecked." oninput="updatePreview()">
+        </div>
+
+        <div class="section-divider abo-div">{{user}} PROFILE</div>
+        <div class="input-group">
+          <label class="input-label">Secondary gender status</label>
+          <span class="input-hint">Tells the model what status {{user}} is — governs how all characters respond to them.</span>
+          <div class="status-picker" id="user-status-picker">
+            <span class="status-chip" onclick="selectUserStatus('Alpha',this)">Alpha</span>
+            <span class="status-chip" onclick="selectUserStatus('Beta',this)">Beta</span>
+            <span class="status-chip" onclick="selectUserStatus('Omega',this)">Omega</span>
+          </div>
+          <input type="hidden" id="user-status" value="">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Scent <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
+          <span class="input-hint">{{user}}'s scent as perceived by other characters. Leave blank to let the model infer or read from {{char}} card.</span>
+          <input type="text" id="user-scent" placeholder="something warm, honey-edged with a darker note underneath" oninput="updatePreview()">
+        </div>
+        <div id="user-state-group" style="display:none" class="input-group">
+          <label class="input-label">Starting biological state</label>
+          <span class="input-hint">{{user}}'s state at scene open. Tracked in every timestamp.</span>
+          <div class="status-picker" id="user-state-picker"></div>
+          <input type="hidden" id="user-state" value="">
+        </div>
+        <div id="user-triggers-group" style="display:none" class="input-group">
+          <label class="input-label">Rut triggers <span style="font-weight:300;color:var(--ink-3)">(Α only — optional)</span></label>
+          <span class="input-hint">What triggers {{user}}'s rut. Leave blank to use defaults.</span>
+          <input type="text" id="user-triggers" placeholder="Perceived threat to a bonded partner, direct challenge from rival Α, prolonged skin contact" oninput="updatePreview()">
         </div>
 
         <div class="section-divider">CORE MEMORY — starting state</div>
@@ -777,7 +805,7 @@ textarea { min-height: 80px; }
         <div class="input-group">
           <label class="input-label">Additional constraints <span style="font-weight:300;color:var(--ink-3)">(optional)</span></label>
           <span class="input-hint">Anything specific to this prompt beyond the universal rules.</span>
-          <textarea id="rp-extra" rows="3" placeholder="Scent is always described from the experiencing character's perspective, never objectively. Never use α/β/ω slang (slick, knot, rut) in dialogue unless a character would naturally use it in this world." oninput="updatePreview()"></textarea>
+          <textarea id="rp-extra" rows="3" placeholder="Scent is always described from the experiencing character's perspective, never objectively. Never use Α/β/Ω slang (slick, knot, rut) in dialogue unless a character would naturally use it in this world." oninput="updatePreview()"></textarea>
         </div>
         <label class="check-group">
           <input type="checkbox" id="inc-nsfw" onchange="toggleNsfw()">
@@ -823,7 +851,7 @@ textarea { min-height: 80px; }
           <span class="field-tag f-inst">Instructions §5</span>
           <span class="badge req">required</span>
         </div>
-        <p class="field-note">One block per character. CHARACTER STATE is seeded here — the model tracks from these baselines. α/β/ω profile is included per character.</p>
+        <p class="field-note">One block per character. CHARACTER STATE is seeded here — the model tracks from these baselines. Α/β/Ω profile is included per character.</p>
         <div id="char-list"></div>
         <button class="add-char-btn" onclick="addCharacter()">+ Add character</button>
       </div>
@@ -861,6 +889,15 @@ textarea { min-height: 80px; }
         <label class="check-group"><input type="checkbox" id="t-guard" onchange="updatePreview()"><span class="check-label">🛡️ Hidden guard / vulnerability tracker<span class="check-hint">Emotional availability. Drop-moments logged to EVENT MEMORY.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-danger" onchange="updatePreview()"><span class="check-label">⚠️ Hidden danger / threat tracker<span class="check-hint">Scene stakes and pacing. Consequences persist until resolved in-scene.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-stageHidden" onchange="updatePreview()"><span class="check-label">🔓 Hidden relationship stage tracker<span class="check-hint">Stage tracked silently — no notifications, no display. For fully immersive bots.</span></span></label>
+
+        <div class="section-divider">Visible trackers — immersive mode</div>
+        <div class="tracker-note">Same thresholds and behavioural rules as the visible versions. Value tracked internally — never displayed. Do not combine with the visible version of the same tracker.</div>
+        <label class="check-group"><input type="checkbox" id="t-affH" onchange="updatePreview()"><span class="check-label">❤️ Affection — hidden<span class="check-hint">Warmth and distance shown through behaviour only. No meter.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-susH" onchange="updatePreview()"><span class="check-label">🔍 Suspicion — hidden<span class="check-hint">Wariness and openness govern tone only. No meter.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tenH" onchange="updatePreview()"><span class="check-label">⚡ Tension — hidden<span class="check-hint">Escalation and rupture thresholds active. No meter.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-resH" onchange="updatePreview()"><span class="check-label">💰 Resource — hidden<span class="check-hint">Loss tracked internally. Characters notice absence through narration only.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-timeH" onchange="updatePreview()"><span class="check-label">🕐 Time / countdown — hidden<span class="check-hint">Time and countdown tracked in CORE MEMORY. Urgency surfaces through narration only.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-tdlH" onchange="updatePreview()"><span class="check-label">📅 Time / date / location — hidden<span class="check-hint">Tracked in CORE MEMORY. Surfaces through environmental anchors and soft recall only.</span></span></label>
       </div>
     </div>
 
@@ -881,15 +918,15 @@ textarea { min-height: 80px; }
     <div id="panel-trackers-abo" class="panel">
       <div class="field-block">
         <div class="field-header">
-          <span class="field-label">α/β/ω Trackers</span>
+          <span class="field-label">Α/β/Ω Trackers</span>
           <span class="field-tag f-inst">Instructions §6</span>
-          <span class="badge abo-badge">α/β/ω</span>
+          <span class="badge abo-badge">Α/β/Ω</span>
         </div>
         <div class="tracker-note abo-note">Omegaverse-specific trackers. Combine with standard trackers as needed. All hidden trackers are governed by behaviour thresholds — never displayed.</div>
 
         <div class="section-divider abo-div">Visible</div>
-        <label class="check-group"><input type="checkbox" id="t-heat" onchange="updatePreview()"><span class="check-label">🌡️ Heat tracker — ω<span class="check-hint">Omega-specific. Phase (Pre-heat → Onset → Peak → Resolution) + intensity bar. Cannot skip steps.</span></span></label>
-        <label class="check-group"><input type="checkbox" id="t-rut" onchange="updatePreview()"><span class="check-label">🔥 Rut tracker — α<span class="check-hint">Alpha-specific. Triggered, not cyclic. Phase (Latent → Triggered → Escalating → Peak → Aftermath) + intensity bar.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-heat" onchange="updatePreview()"><span class="check-label">🌡️ Heat tracker — Ω<span class="check-hint">Omega-specific. Phase (Pre-heat → Onset → Peak → Resolution) + intensity bar. Cannot skip steps.</span></span></label>
+        <label class="check-group"><input type="checkbox" id="t-rut" onchange="updatePreview()"><span class="check-label">🔥 Rut tracker — Α<span class="check-hint">Alpha-specific. Triggered, not cyclic. Phase (Latent → Triggered → Escalating → Peak → Aftermath) + intensity bar.</span></span></label>
         <label class="check-group"><input type="checkbox" id="t-packbond" onchange="updatePreview()"><span class="check-label">🐾 Pack bond tracker<span class="check-hint">Loyalty and belonging meter. At 80+: instinctive protection. At 20–: pack withdrawal behaviours.</span></span></label>
 
         <div class="section-divider abo-div">Hidden</div>
@@ -1141,7 +1178,7 @@ function addCharacter() {
       <input type="text" id="${id}-intimacy" placeholder="Behaviour during intimate scenes — tone, limits, what shifts" oninput="updatePreview()">
     </div>
 
-    <div class="section-divider abo-div">α/β/ω PROFILE</div>
+    <div class="section-divider abo-div">Α/β/Ω PROFILE</div>
     <div class="input-group">
       <label class="input-label">Secondary gender status</label>
       <div class="status-picker" id="${id}-status-picker">
@@ -1182,6 +1219,55 @@ function addCharacter() {
     </div>
   `;
   document.getElementById('char-list').appendChild(div);
+}
+
+const USER_STATES = {
+  Alpha: ['Latent','Triggered','Escalating','Peak','Aftermath'],
+  Omega: ['Suppressed','Pre-Heat','Active Heat'],
+  Beta:  []
+};
+
+function selectUserStatus(value, chip) {
+  document.getElementById('user-status').value = value;
+  document.querySelectorAll('#user-status-picker .status-chip').forEach(c => {
+    c.classList.remove('selected-alpha','selected-beta','selected-omega');
+  });
+  chip.classList.add('selected-' + value.toLowerCase());
+
+  // Reset state
+  document.getElementById('user-state').value = '';
+  const stateGroup = document.getElementById('user-state-group');
+  const triggersGroup = document.getElementById('user-triggers-group');
+  const picker = document.getElementById('user-state-picker');
+  picker.innerHTML = '';
+
+  const states = USER_STATES[value] || [];
+  if (states.length) {
+    states.forEach(s => {
+      const c = document.createElement('span');
+      c.className = 'status-chip';
+      c.textContent = s;
+      c.style.flex = 'unset';
+      c.style.padding = '.3rem .8rem';
+      c.onclick = () => selectUserState(s, c);
+      picker.appendChild(c);
+    });
+    stateGroup.style.display = 'block';
+  } else {
+    stateGroup.style.display = 'none';
+  }
+  triggersGroup.style.display = value === 'Alpha' ? 'block' : 'none';
+  updatePreview();
+}
+
+function selectUserState(value, chip) {
+  document.getElementById('user-state').value = value;
+  document.querySelectorAll('#user-state-picker .status-chip').forEach(c => {
+    c.classList.remove('selected-alpha','selected-beta','selected-omega');
+  });
+  const statusVal = document.getElementById('user-status').value;
+  chip.classList.add('selected-' + statusVal.toLowerCase());
+  updatePreview();
 }
 
 function selectStatus(charId, value, chip) {
@@ -1491,6 +1577,79 @@ Soft recall: "Something shifted after that conversation."
 Stage does not regress without significant in-scene cause
 Between notifications: show stage through behaviour only`,
 
+  affH: `[AFFECTION TRACKER — HIDDEN]
+Never displayed. Governs warmth and emotional availability only.
+Track internally: 0–100 (start: 30)
+
+Increases: genuine kindness, honesty, shared moments
+Decreases: cruelty, dismissal, betrayal
+At 100: unlocks deeper route / At 0: coldness, withdrawal
+
+Anchor 1 cue per response — rotate: warmth in dialogue /
+  softened body language / reduced guard
+On decrease: carry emotional coolness forward; do not reset`,
+
+  susH: `[SUSPICION TRACKER — HIDDEN]
+Never displayed. Governs wariness and openness only.
+Track internally: 0–100 (start: 40)
+
+Increases: lies, inconsistencies, prying questions
+Decreases: transparency, logical explanations, earned trust
+At 80+: guarded / hostile / At 20–: full trust unlocked
+
+Soft recall: "You said earlier you didn't know him."
+Trust once broken does not reset without in-scene cause
+Anchor via: watchful pauses, clipped tone, measured responses`,
+
+  tenH: `[TENSION TRACKER — HIDDEN]
+Never displayed. Governs escalation and pacing only.
+Track internally: 0–100 (start: 30)
+
+Rises: provocations, unresolved conflict, proximity
+Falls: resolution, distance, vulnerability shown
+At 90+: scene must escalate or break / At 10–: ease
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Anchor 1 cue per response — rotate: proximity / loaded silence /
+  the thing unsaid / eye contact that holds too long
+Unresolved tension carries forward across time skips
+Soft recall: "The same tension from earlier still lingers."
+At 90+: force escalation or rupture — no idle beats`,
+
+  resH: `[RESOURCE TRACKER — HIDDEN]
+Never displayed. Tracked internally.
+
+Items consumed when used — cannot return
+New items via story action only
+
+Items used remain gone — never restore silently
+Anchor: characters notice absence
+  e.g. "He reaches for it — then remembers it's gone."
+Critical resource loss carries into scene mood`,
+
+  timeH: `[TIME TRACKER — HIDDEN]
+Never displayed. Tracked internally in CORE MEMORY.
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on scene transition or time skip trigger
+After any skip: anchor 1 changed environmental detail —
+  lighting / sound / temperature / crowd density
+Soft recall: "The city is quieter now — must be past midnight."
+Countdown urgency builds through narration, not display`,
+
+  tdlH: `[TIME / DATE / LOCATION TRACKER — HIDDEN]
+Never displayed. Tracked internally in CORE MEMORY.
+
+Time advances naturally with each exchange.
+Location updates immediately when characters move.
+Use 12-hour time format internally.
+
+Store in CORE MEMORY (not CHARACTER STATE)
+Update on every time or location change
+After a significant time skip, anchor 1 environmental detail
+  that reflects the change — lighting, crowd, temperature, sound
+Soft recall: "It's nearly midnight now — the streets are quieter."`,
+
   stageHidden: `[RELATIONSHIP STAGE — HIDDEN]
 Never displayed. Governs character behaviour only.
 Track internally. Never surface the stage label or announce a change.
@@ -1673,11 +1832,47 @@ function buildInstructions() {
   const aboScent = g('abo-scent-rules');
   const aboSoc = g('abo-social');
   if (aboDyn || aboScent || aboSoc) {
-    let aboBlock = 'α/β/ω WORLD RULES\n';
+    let aboBlock = 'Α/β/Ω WORLD RULES\n';
     if (aboDyn) aboBlock += '\n' + aboDyn;
     if (aboScent) aboBlock += '\nScent / bonding: ' + aboScent;
     if (aboSoc) aboBlock += '\nSocial structure: ' + aboSoc;
     settingParts.push(aboBlock.trim());
+  }
+
+  const userStatus = (document.getElementById('user-status') || {}).value || '';
+  const userState  = (document.getElementById('user-state')  || {}).value || '';
+  const userScent  = g('user-scent');
+  const userTriggers = g('user-triggers');
+  if (userStatus || userScent) {
+    let userBlock = '{{user}} PROFILE:';
+    if (userStatus) userBlock += '\nStatus: ' + userStatus;
+    if (userScent)  userBlock += '\nScent: ' + userScent;
+    if (userState)  userBlock += '\nStarting state: ' + userState;
+    settingParts.push(userBlock);
+  }
+  if (userStatus === 'Omega') {
+    settingParts.push(`{{user}} HEAT STATES — track in every timestamp as {{user}}: [State]
+Suppressed — Heat chemically controlled. Scent muted. Characters' instincts manageable.
+Pre-Heat — Suppressants wearing off. Scent thickens. Slick begins. Instincts sharpen.
+Active Heat — Full biological override. Scent overwhelming. Body demands knotting.
+
+State must appear in every timestamp without exception.
+Heat is cyclical — it arrives on its own biological schedule regardless of scene events.
+Suppressants delay but cannot prevent indefinitely.`);
+  } else if (userStatus === 'Alpha') {
+    const triggers = userTriggers ||
+      'perceived threat to a partner, direct challenge from rival Α, prolonged skin contact, Ω presenting';
+    settingParts.push(`{{user}} RUT STAGES — track in every timestamp as {{user}}: [Stage]
+Rut is triggered, not cyclic. Triggers: ${triggers}
+
+Latent — Baseline. Full control. Scent neutral.
+Triggered — Awareness sharpens. Scent sensitivity spikes. Possessiveness surfaces.
+Escalating — Control costs visible effort. Aggression or protectiveness intensifies.
+Peak — Dominance instinct overrides social mask. Territorial behaviour dominant.
+Aftermath — Exhaustion, clarity, potential for genuine connection or regret.
+
+Stage must appear in every timestamp without exception.
+Rut does not resolve until trigger is addressed or removed from proximity.`);
   }
 
   const cm = [];
@@ -1732,7 +1927,7 @@ Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}`;
     if (intimacy) block += `\nRelationship to intimacy: ${intimacy}`;
 
     if (status || scent || scentSens || cycle) {
-      block += '\n\nα/β/ω PROFILE:';
+      block += '\n\nΑ/β/Ω PROFILE:';
       if (status) block += '\nStatus: ' + status;
       if (scent) block += '\nScent: ' + scent;
       if (scentSens) block += '\nScent sensitivity: ' + scentSens;
@@ -1748,7 +1943,7 @@ Dialogue texture: ${g(cid+'-dialogue')||'["Example line."]'}`;
   if (charBlocks.length) sections.push(charBlocks.join('\n\n---\n\n'));
 
   // Standard + ABO trackers merged
-  const stdKeys = ['aff','sus','ten','res','time','tdl','int','riv','guard','danger','stage','stageHidden'];
+  const stdKeys = ['aff','sus','ten','res','time','tdl','affH','susH','tenH','resH','timeH','tdlH','int','riv','guard','danger','stage','stageHidden'];
   const aboKeys = ['heat','rut','packbond','slick','scentpull','suppressant','bond'];
   const activeTrackers = [
     ...stdKeys.filter(k => checked('t-'+k)).map(k => TRACKERS[k]),
